@@ -1,7 +1,6 @@
 package com.example.tictactoe;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,11 +8,23 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+
+import static android.widget.Toast.makeText;
+
 public class RegistrationActivity extends AppCompatActivity {
 
     private EditText userName, userEmail, userPassword;
     private Button regButton;
     private TextView userLogin;
+    private FirebaseAuth firebaseAuth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,12 +32,29 @@ public class RegistrationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_registration);
         setupUIViews();
 
+        firebaseAuth = FirebaseAuth.getInstance();
+
         regButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
             if (validate()){
                 //Upload this data to the database
+            String user_email = userEmail.getText().toString().trim();
+            String user_password = userPassword.getText().toString().trim();
+
+            firebaseAuth.createUserWithEmailAndPassword(user_email, user_password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        makeText(RegistrationActivity.this, "Registration Successfull", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
+                    }
+                    else{
+                        Toast.makeText(RegistrationActivity.this, "Registration Wasn't Successfull", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
                 }
             }
         });
@@ -52,7 +80,7 @@ public class RegistrationActivity extends AppCompatActivity {
         String password = userPassword.getText().toString();
         String email = userEmail.getText().toString();
         if(name.isEmpty() && password.isEmpty() && email.isEmpty()){
-            Toast.makeText(this, "Please enter all the details!", Toast.LENGTH_SHORT).show();
+            makeText(this, "Please enter all the details!", Toast.LENGTH_SHORT).show();
         }else{
             result = true;
         }

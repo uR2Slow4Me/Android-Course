@@ -18,7 +18,7 @@ private EditText Password;
 private TextView Info;
 private Button Login;
 private int Counter=3;
-
+private TextView userRegistration;
 @Override
 protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +28,7 @@ protected void onCreate(Bundle savedInstanceState) {
         Password = (EditText)findViewById(R.id.etPassword);
         Info = (TextView)findViewById(R.id.tvInfo);
         Login = (Button)findViewById(R.id.btnLogin);
+        userRegistration = (TextView)findViewById(R.id.tvRegister);
 
         Info.setText("Numbers of attemps is 3");
 
@@ -36,6 +37,12 @@ protected void onCreate(Bundle savedInstanceState) {
 public void onClick(View view) {
         validate(Name.getText().toString(), Password.getText().toString());
         }
+        });
+        userRegistration.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                        startActivity(new Intent(LoginActivity.this, RegistrationActivity.class));
+                }
         });
 
         }

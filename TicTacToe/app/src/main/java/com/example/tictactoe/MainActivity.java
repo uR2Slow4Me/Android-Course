@@ -1,6 +1,5 @@
 package com.example.tictactoe;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,7 +8,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button[][] positions = new Button[3][3];
+    private Button[][] positions;
 
     private boolean isPlayer1Turn = true;
 
@@ -22,6 +21,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView player1TextView;
 
     private TextView player2TextView;
+
+    public MainActivity() {
+        positions = new Button[3][3];
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
